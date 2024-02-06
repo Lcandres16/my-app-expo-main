@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "scheme": "tamagui-app",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#213D05",
+      "image": "./assets/Evil_Dead_.png",
+      "resizeMode": "contain"
+    },
+    "icon": "./assets/840_560.jpeg",
+    "name": "tamagui-app",
+    "slug": "tamagui-app"
+  }
+}
