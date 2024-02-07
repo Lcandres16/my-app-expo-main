@@ -17,7 +17,7 @@ export default function Layout() {
 
   const fetchFilmsFromBackend = async () => {
     try {
-      const response = await fetch("http://10.0.8.224:8081/film");
+      const response = await fetch("http://192.168.1.2:8082/films");
       const data = await response.json();
       setFilms(data);
     } catch (error) {
@@ -38,7 +38,7 @@ export default function Layout() {
 
   const handleDeleteFilm = async (id) => {
     try {
-      const response = await fetch(`http://10.0.8.224:8081/film/delete/${id}`, {
+      const response = await fetch(`http://10.0.8.224:8082/films/delete/${id}`, {
         method: "DELETE"
       });
       if (response.ok) {
@@ -62,7 +62,7 @@ export default function Layout() {
               const updatedFilms = [...films];
               if (selectedFilmIndex !== null) {
                 const response = await fetch(
-                  `http://10.0.8.224:8081/film/${selectedFilmIndex}`,
+                  `http://192.168.1.1:8082/films/${selectedFilmIndex}`,
                   {
                     method: "PUT",
                     headers: {
@@ -79,7 +79,7 @@ export default function Layout() {
                   );
                 }
               } else {
-                const response = await fetch("http://10.0.8.224:8081/film", {
+                const response = await fetch("http://10.0.8.224:8082/films", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json"
@@ -150,7 +150,7 @@ export default function Layout() {
             >
               <Button onPress={() => handleFilmClick(index)}>
                 <View style={styles.filmBox}>
-                  <Text style={styles.filmText}>{`Film ${index + 1}`}</Text>
+                  <Text style={styles.filmText}>{`Films ${index + 1}`}</Text>
                 </View>
               </Button>
               {selectedFilmIndex === index && (

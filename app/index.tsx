@@ -25,12 +25,13 @@ export default function Home() {
           <H1
             textAlign="center"
             style={{
-              top: 360,
+              top: 660,
               position: "absolute",
-              width: "115%"
+              width: "100%"
             }}
           >
-            Movie Mummy
+            Movie 
+            Evil Dead
           </H1>
         </YStack>
         <YStack space={5}>
