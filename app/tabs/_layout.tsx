@@ -25,24 +25,24 @@ export default function Layout() {
     }
   };
 
-  const handleFilmClick = (index) => {
+  const handleFilmClick = (index: number) => {
     setSelectedFilmIndex(selectedFilmIndex === index ? null : index);
   };
 
-  const handleEditFilm = (index) => {
+  const handleEditFilm = (index: number) => {
     setSelectedFilmIndex(index);
     setShowForm(true);
     setShowCrossButton(false);
     setShowBackendData(false);
   };
 
-  const handleDeleteFilm = async (id) => {
+  const handleDeleteFilm = async (id: string) => {
     try {
       const response = await fetch(`http://10.0.8.224:8082/films/delete/${id}`, {
         method: "DELETE"
       });
       if (response.ok) {
-        const updatedFilms = films.filter((film) => film.id !== id);
+        const updatedFilms = films.filter((film: any) => film.id !== id);
         setFilms(updatedFilms);
         setSelectedFilmIndex(null);
       } else {
@@ -143,10 +143,15 @@ export default function Layout() {
 
       <View style={styles.filmsListContainer}>
         {showBackendData &&
-          films.map((film, index) => (
+          films.map((film: any, index: number) => (
             <View
               key={index}
-              style={styles.filmContainer}
+              style={{
+                ...styles.filmContainer,
+                marginTop: index === 0 ? 0 : 20,
+                borderColor: selectedFilmIndex === index ? "#6A0DAD" : "transparent",
+                borderWidth: selectedFilmIndex === index ? 2 : 0,
+              }}
             >
               <Button onPress={() => handleFilmClick(index)}>
                 <View style={styles.filmBox}>
@@ -195,7 +200,12 @@ const styles = {
     fontSize: 16,
     marginBottom: 5
   },
-
+  filmContainer: {
+    width: "80%",
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    padding: 10
+  },
   filmDetails: {
     marginTop: 10,
     backgroundColor: "#f0f0f0",
