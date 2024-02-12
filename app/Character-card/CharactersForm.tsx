@@ -1,60 +1,72 @@
 import React, { useState } from "react";
 import {
   Image,
-  ImageStyle,
+  StyleSheet,
   Text,
   TextInput,
-  TextStyle,
   TouchableOpacity,
-  View,
-  ViewStyle
+  View
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-interface FilmsFormProps {
-  initialFilm: {
-    title: string;
+interface CharactersFormProps {
+  initialData?: {
+    id: number;
+    description: string;
+    cost: number;
+    Aspect: string;
+    age: number;
+    interpreted: string;
   };
   onSubmit: (data: any) => void;
   onCancel: () => void;
 }
 
-const API_URL = "http://10.0.8.224:8081";
+const API_URL = "http://192.168.3.18:8088";
 
-const FilmsForm: React.FC<FilmsFormProps> = ({
-  initialFilm,
+const CharactersForm: React.FC<CharactersFormProps> = ({
+  initialData = {
+    id: 0,
+    description: "",
+    cost: 0,
+    Aspect: "",
+    age: 0,
+    interpreted: ""
+  },
   onSubmit,
   onCancel
 }) => {
-  const [title, setTitle] = useState(initialFilm.title || "");
-  const [duration, setDuration] = useState("");
-  const [director, setDirector] = useState("");
+  const [description, setDescription] = useState(initialData.description || "");
+  const [cost, setCost] = useState(initialData.cost.toString() || "");
+  const [Aspect, setAspect] = useState(initialData.Aspect || "");
+  const [age, setAge] = useState(initialData.age.toString() || "");
+  const [interpreted, setInterpreted] = useState(initialData.interpreted || "");
 
   const handleSubmit = () => {
-    const filmData = { title, duration, director };
-    fetch(`${API_URL}/film`, {
+    const entityData = { description, cost, Aspect, age, interpreted };
+    fetch(`${API_URL}/characters`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(filmData)
+      body: JSON.stringify(entityData)
     })
       .then((response) => response.json())
       .then((data) => {
         onSubmit(data);
-        setTitle("");
-        setDuration("");
-        setDirector("");
+        setDescription("");
+        setCost("");
+        setAspect("");
+        setAge("");
+        setInterpreted("");
       })
       .catch((error) =>
         console.error("Error al enviar los datos al servidor:", error)
       );
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Films</Text>
+        <Text style={styles.headerText}>Characters Form</Text>
         <TouchableOpacity
           onPress={onCancel}
           style={styles.closeIcon}
@@ -69,38 +81,59 @@ const FilmsForm: React.FC<FilmsFormProps> = ({
 
       <View style={styles.imageContainer}>
         <Image
-          source={require("../images/icon.png")}
+          source={require("../images/Vector-2.png")}
           style={styles.image}
         />
       </View>
 
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Title</Text>
+        <Text style={styles.titleText}>Description</Text>
         <TextInput
           style={styles.titleInput}
-          value={title}
-          onChangeText={(text) => setTitle(text)}
-          placeholder="Enter title"
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+          placeholder="Enter description"
         />
       </View>
 
       <View style={styles.infoContainer}>
         <View style={styles.infoBox}>
-          <Text style={styles.infoLabelText}>Duration</Text>
+          <Text style={styles.infoLabelText}>Cost</Text>
           <TextInput
             style={styles.infoInput}
-            value={duration}
-            onChangeText={(text) => setDuration(text)}
-            placeholder="Enter duration"
+            value={cost}
+            onChangeText={(text) => setCost(text)}
+            placeholder="Enter cost"
           />
         </View>
         <View style={styles.infoBox}>
-          <Text style={styles.infoLabelText}>Director</Text>
+          <Text style={styles.infoLabelText}>Aspect</Text>
           <TextInput
             style={styles.infoInput}
-            value={director}
-            onChangeText={(text) => setDirector(text)}
-            placeholder="Enter director"
+            value={Aspect}
+            onChangeText={(text) => setAspect(text)}
+            placeholder="Enter aspect"
+          />
+        </View>
+      </View>
+
+      <View style={styles.infoContainer}>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoLabelText}>Age</Text>
+          <TextInput
+            style={styles.infoInput}
+            value={age}
+            onChangeText={(text) => setAge(text)}
+            placeholder="Enter age"
+          />
+        </View>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoLabelText}>Interpreted</Text>
+          <TextInput
+            style={styles.infoInput}
+            value={interpreted}
+            onChangeText={(text) => setInterpreted(text)}
+            placeholder="Enter interpreted"
           />
         </View>
       </View>
@@ -110,60 +143,61 @@ const FilmsForm: React.FC<FilmsFormProps> = ({
           onPress={handleSubmit}
           style={styles.createFilmButton}
         >
-          <Text style={styles.createFilmButtonText}>Create Film</Text>
+          <Text style={styles.createFilmButtonText}>Create Characters</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
-    position: "absolute", // Posicionamiento absoluto para superponer sobre la lista de películas
-    top: 0,
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 20,
+    zIndex: 9999,
+    position: "absolute",
+    top: -45,
     left: 0,
     right: 0,
-    bottom: 0,
-    padding: 20,
-    backgroundColor: "#fff",
-    zIndex: 9999 // Asegura que esté por encima de la lista de películas
-    // Resto de estilos...
-  } as ViewStyle,
+    bottom: 0
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 30,
     marginTop: 30
-  } as ViewStyle,
+  },
   headerText: {
     fontSize: 24,
     fontWeight: "bold"
-  } as TextStyle,
+  },
   closeIcon: {
     marginLeft: 10
-  } as ViewStyle,
+  },
   imageContainer: {
     alignItems: "center",
     marginBottom: 20,
-    marginTop: 50
-  } as ViewStyle,
+    marginTop: 0
+  },
   image: {
-    width: 300,
+    width: 200,
     height: 200,
     borderRadius: 10,
-    overflow: "hidden"
-  } as ImageStyle,
+    overflow: "hidden",
+    right: 29
+  },
   titleContainer: {
     alignItems: "center",
     marginBottom: 10,
     marginTop: 50
-  } as ViewStyle,
+  },
   titleText: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10
-  } as TextStyle,
+  },
   titleInput: {
     height: 40,
     borderColor: "gray",
@@ -172,43 +206,43 @@ const styles = {
     paddingHorizontal: 16,
     width: 350,
     borderRadius: 15
-  } as TextStyle,
+  },
   infoContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10
-  } as ViewStyle,
+  },
   infoBox: {
     width: "48%",
     marginBottom: 10
-  } as ViewStyle,
+  },
   infoLabelText: {
     fontWeight: "bold",
     marginBottom: 5
-  } as TextStyle,
+  },
   infoInput: {
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
     paddingHorizontal: 16,
     borderRadius: 15
-  } as TextStyle,
+  },
   buttonContainer: {
     alignSelf: "center",
-    marginTop: 50
-  } as ViewStyle,
+    marginTop: 10
+  },
   createFilmButton: {
     backgroundColor: "#900000",
     paddingVertical: 15,
     borderRadius: 15,
     width: 200,
     alignItems: "center"
-  } as ViewStyle,
+  },
   createFilmButtonText: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold"
-  } as TextStyle
-};
+  }
+});
 
-export default FilmsForm;
+export default CharactersForm;
