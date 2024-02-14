@@ -64,5 +64,7 @@
     "node": "20.10.0",
     "yarn": "3.7.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "https://github.com/Lcandres16/my-app-expo-main.git",
+  "author": "Lcandres16 <116099973+Lcandres16@users.noreply.github.com>"
 }
