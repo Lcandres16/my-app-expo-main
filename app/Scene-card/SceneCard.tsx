@@ -1,18 +1,25 @@
 import React, { useState } from "react";
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import SceneEdit from "./Card-edit";
 
+interface Scene {
+  id: number;
+  description: string;
+  budget: number;
+  hours: number;
+}
+
 interface CardProps {
-  data: any;
+  data: Scene;
   handleEdit: () => void;
   handleDelete: () => void;
 }
 
-const API_URL = "http://10.0.3.26:8088";
+const API_URL = "http://192.168.18.5:8083";
 
-const Card: React.FC<CardProps> = ({ data, handleEdit, handleDelete }) => {
+const SceneCard: React.FC<CardProps> = ({ data, handleEdit, handleDelete }) => {
   const [editing, setEditing] = useState(false);
   const navigation = useNavigation();
 
@@ -20,7 +27,7 @@ const Card: React.FC<CardProps> = ({ data, handleEdit, handleDelete }) => {
     setEditing(false);
   };
 
-  const handleSave = async (updatedScene) => {
+  const handleSave = async (updatedScene: Scene) => {
     try {
       const response = await fetch(`${API_URL}/scene/${updatedScene.id}`, {
         method: "PUT",
@@ -106,7 +113,7 @@ const Card: React.FC<CardProps> = ({ data, handleEdit, handleDelete }) => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     justifyContent: "center",
@@ -152,6 +159,6 @@ const styles = {
     marginBottom: 5,
     left: 25
   }
-};
+});
 
-export default Card;
+export default SceneCard;

@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button, ScrollView, View } from "tamagui";
-
 import CharacterCard from "../Character-card/CharacterCard";
 import CharactersForm from "../Character-card/CharactersForm";
 import { deleteCharacter, fetchCharacters } from "../peticiones/Petitions";
 
-export default function Layout() {
-  const [showForm, setShowForm] = useState(false);
-  const [characters, setCharacters] = useState([]);
-  const [cardsToShow, setCardsToShow] = useState(3);
-  const [visibleCards, setVisibleCards] = useState([]);
+interface Character {
+  id: number;
+  // Define la estructura de un personaje según tu aplicación
+}
+
+const Layout: React.FC = () => {
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [cardsToShow, setCardsToShow] = useState<number>(3);
+  const [visibleCards, setVisibleCards] = useState<Character[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,18 +32,18 @@ export default function Layout() {
     setVisibleCards(characters.slice(0, cardsToShow));
   }, [characters, cardsToShow]);
 
-  const handleDeleteCharacter = async (characterId) => {
+  const handleDeleteCharacter = async (characterId: number) => {
     try {
       await deleteCharacter(characterId);
-      setCharacters(
-        characters.filter((character) => character.id !== characterId)
+      setCharacters((prevCharacters) =>
+        prevCharacters.filter((character) => character.id !== characterId)
       );
     } catch (error) {
       console.error("Error al eliminar el personaje:", error);
     }
   };
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: any) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
     if (layoutMeasurement.height + contentOffset.y >= contentSize.height) {
       setCardsToShow(cardsToShow + 3);
@@ -76,7 +80,7 @@ export default function Layout() {
       <Button
         onPress={() => setShowForm(true)}
         style={{
-          backgroundColor: "#751C1C",
+          backgroundColor: "#EDF0F7",
           borderRadius: 50,
           padding: 10,
           height: 64,
@@ -89,7 +93,7 @@ export default function Layout() {
         <MaterialCommunityIcons
           name="plus"
           size={40}
-          color="#fff"
+          color="#EDF0F7"
           style={{ borderRadius: 50 }}
         />
       </Button>
@@ -101,9 +105,11 @@ export default function Layout() {
             setShowForm(false);
           }}
           onCancel={() => setShowForm(false)}
-          initialCharacter={{}}
+          initialCharacter={{}} // Asegúrate de proporcionar la estructura correcta para el personaje inicial
         />
       )}
     </View>
   );
-}
+};
+
+export default Layout;

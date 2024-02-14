@@ -6,81 +6,23 @@ import { Button } from "tamagui";
 export default function Layout() {
   const router = useRouter();
 
+  const tabOptions = (name, title, iconName) => ({
+    title,
+    tabBarIcon: (props) => (
+      <MaterialCommunityIcons name={iconName} {...props} />
+    ),
+    headerLeft: () => (
+      <Button ml="$2.5" onPress={() => router.push("/")}>
+        <MaterialCommunityIcons name="arrow-left" />
+      </Button>
+    ),
+  });
+
   return (
     <Tabs>
-      <Tabs.Screen
-        name="tab-films"
-        options={{
-          title: "Films",
-          tabBarIcon(props) {
-            return (
-              <MaterialCommunityIcons
-                name="filmstrip"
-                {...props}
-              />
-            );
-          },
-          headerLeft() {
-            return (
-              <Button
-                ml="$2.5"
-                onPress={() => router.push("/")}
-              >
-                <MaterialCommunityIcons name="arrow-left" />
-              </Button>
-            );
-          }
-        }}
-      />
-      <Tabs.Screen
-        name="tab-scene"
-        options={{
-          title: "Scene",
-          tabBarIcon(props) {
-            return (
-              <MaterialCommunityIcons
-                name="camera"
-                {...props}
-              />
-            );
-          },
-          headerLeft() {
-            return (
-              <Button
-                ml="$2.5"
-                onPress={() => router.push("/")}
-              >
-                <MaterialCommunityIcons name="arrow-left" />
-              </Button>
-            );
-          }
-        }}
-      />
-
-      <Tabs.Screen
-        name="tab-characters"
-        options={{
-          title: "Character",
-          tabBarIcon(props) {
-            return (
-              <MaterialCommunityIcons
-                name="account-outline"
-                {...props}
-              />
-            );
-          },
-          headerLeft() {
-            return (
-              <Button
-                ml="$2.5"
-                onPress={() => router.push("/")}
-              >
-                <MaterialCommunityIcons name="arrow-left" />
-              </Button>
-            );
-          }
-        }}
-      />
+      <Tabs.Screen name="tab-films" options={tabOptions("tab-films", "Films", "filmstrip")} />
+      <Tabs.Screen name="tab-scene" options={tabOptions("tab-scene", "Scene", "camera")} />
+      <Tabs.Screen name="tab-characters" options={tabOptions("tab-characters", "Character", "account-outline")} />
     </Tabs>
   );
 }

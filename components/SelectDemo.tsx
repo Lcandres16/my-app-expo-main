@@ -1,130 +1,71 @@
-import { useState } from "react";
-import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import { Adapt, Fieldset, Label, Select, Sheet, YStack } from "tamagui";
+
+import React, { useState } from "react";
+import { Check, ChevronDown } from "@tamagui/lucide-icons";
+import { Fieldset, Label, Select, Sheet } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 
-export default function SelectDemo() {
-  const [val, setVal] = useState("apple");
+interface Fruit {
+  name: string;
+}
+
+const SelectDemo: React.FC = () => {
+  const [selectedItem, setSelectedItem] = useState<string>("Apple");
+
+  const items: Fruit[] = [
+    { name: "Apple" },
+    { name: "Pear" },
+    { name: "Blackberry" },
+    { name: "Peach" },
+    { name: "Apricot" },
+    { name: "Melon" },
+    { name: "Honeydew" },
+    { name: "Starfruit" },
+    { name: "Blueberry" },
+    { name: "Raspberry" },
+    { name: "Strawberry" },
+    { name: "Mango" },
+    { name: "Pineapple" },
+    { name: "Lime" },
+    { name: "Lemon" },
+    { name: "Coconut" },
+    { name: "Guava" },
+    { name: "Papaya" },
+    { name: "Orange" },
+    { name: "Grape" },
+    { name: "Jackfruit" },
+    { name: "Durian" }
+  ];
 
   return (
     <Fieldset>
-      <Label htmlFor="food">Select Demo</Label>
-      <Select
-        id="food"
-        value={val}
-        onValueChange={setVal}
-      >
-        <Select.Trigger
-          id="food"
-          iconAfter={ChevronDown}
-        >
-          <Select.Value placeholder="Something" />
+      <Label htmlFor="food">Select a Fruit</Label>
+      <Select id="food" value={selectedItem} onValueChange={setSelectedItem}>
+        <Select.Trigger iconAfter={ChevronDown}>
+          <Select.Value>{selectedItem}</Select.Value>
         </Select.Trigger>
 
-        <Adapt
-          when="sm"
-          platform="touch"
-        >
-          <Sheet
-            modal
-            dismissOnSnapToBottom
-          >
-            <Sheet.Frame>
-              <Sheet.ScrollView>
-                <Adapt.Contents />
-              </Sheet.ScrollView>
-            </Sheet.Frame>
-            <Sheet.Overlay />
-          </Sheet>
-        </Adapt>
-
-        <Select.Content zIndex={200000}>
-          <Select.ScrollUpButton
-            ai="center"
-            jc="center"
-            pos="relative"
-            w="100%"
-            h="$3"
-          >
-            <YStack zi={10}>
-              <ChevronUp size={20} />
-            </YStack>
-            <LinearGradient
-              start={[0, 0]}
-              end={[0, 1]}
-              fullscreen
-              colors={["$background", "$backgroundTransparent"]}
-              br="$4"
-            />
-          </Select.ScrollUpButton>
-
-          <Select.Viewport minWidth={200}>
-            <Select.Group>
-              <Select.Label>Fruits</Select.Label>
-              {items.map((item, i) => {
-                return (
+        <Sheet modal dismissOnSnapToBottom>
+          <Sheet.Frame>
+            <Sheet.ScrollView>
+              <Fieldset>
+                {items.map((item) => (
                   <Select.Item
-                    index={i}
                     key={item.name}
-                    value={item.name.toLowerCase()}
+                    value={item.name}
+                    onPress={() => setSelectedItem(item.name)}
                   >
-                    <Select.ItemText color="$color">
-                      {item.name}
-                    </Select.ItemText>
-                    <Select.ItemIndicator ml="auto">
-                      <Check size={16} />
-                    </Select.ItemIndicator>
+                    {item.name}
+                    {selectedItem === item.name && <Check size={16} />}
                   </Select.Item>
-                );
-              })}
-            </Select.Group>
-          </Select.Viewport>
-
-          <Select.ScrollDownButton
-            ai="center"
-            jc="center"
-            pos="relative"
-            w="100%"
-            h="$3"
-          >
-            <YStack zi={10}>
-              <ChevronDown size={20} />
-            </YStack>
-            <LinearGradient
-              start={[0, 0]}
-              end={[0, 1]}
-              fullscreen
-              colors={["$backgroundTransparent", "$background"]}
-              br="$4"
-            />
-          </Select.ScrollDownButton>
-        </Select.Content>
+                ))}
+              </Fieldset>
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
       </Select>
     </Fieldset>
   );
-}
+};
 
-const items = [
-  { name: "Apple" },
-  { name: "Pear" },
-  { name: "Blackberry" },
-  { name: "Peach" },
-  { name: "Apricot" },
-  { name: "Melon" },
-  { name: "Honeydew" },
-  { name: "Starfruit" },
-  { name: "Blueberry" },
-  { name: "Rasberry" },
-  { name: "Strawberry" },
-  { name: "Mango" },
-  { name: "Pineapple" },
-  { name: "Lime" },
-  { name: "Lemon" },
-  { name: "Coconut" },
-  { name: "Guava" },
-  { name: "Papaya" },
-  { name: "Orange" },
-  { name: "Grape" },
-  { name: "Jackfruit" },
-  { name: "Durian" }
-];
+export default SelectDemo;
